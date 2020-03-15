@@ -21,6 +21,7 @@ void setup() {
 
   colorMode(RGB);
   //size(orig.width, orig.height);
+  //colorMode(HSB, 360, 100, 100);
   size(800, 800);
 
   smooth();
@@ -40,14 +41,14 @@ void draw() {
   origCopy.loadPixels();
   original.loadPixels();
   for (int ix=0; ix < original.height * original.width; ix++) {
+    
     if (trans)
       transValue = 255;
     else
       transValue = min(255, 4*GetBlue(origCopy.pixels[ix]));
-    original.pixels[ix] = color(GetRed(origCopy.pixels[ix]), 
-      GetGreen(origCopy.pixels[ix]), 
-      GetBlue(origCopy.pixels[ix]), 
+    original.pixels[ix] = color(GetRGBColor(origCopy.pixels[ix]), 
       transValue);
+     // original.pixels[ix] = GetHSBColor(origCopy.pixels[ix]);
   }
   original.updatePixels();
   image(original, 0, 0);
