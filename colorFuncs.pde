@@ -1,55 +1,77 @@
-int GetRed(color inC) 
-{
-  int avgC = int((red(inC) + green(inC) + blue(inC))/3);
-  return (min(255, int(1.5 * avgC)));
+/*
+
+ This program was written by Michal Huller
+ started on on 12 Mar 2020
+ Change colors by Steiner colors theory
+ Instead of distance, change bright to Red and Dark to Blue
+ */
+
+import javax.swing.*;
+import java.util.Calendar;
+
+JFileChooser fc;
+
+color bg = #f3f0d0;
+boolean trans = false;
+PGraphics newG;
+
+PImage origCopy;
+
+void setup() {
+
+  colorMode(RGB);
+  //size(orig.width, orig.height);
+  //colorMode(HSB, 360, 100, 100);
+  size(800, 800);
+
+  smooth();
+  noLoop();
+  fc = new JFileChooser("/home/michal/Pictures");
+  if (openFileAndGetImage() == 0)
+    exit();
 }
 
-int GetGreen(color inC) 
-{
-  int avgC = int((red(inC) + green(inC) + blue(inC))/3);
-  //return (int(avgC/3));
-  return (int(avgC/2));
-}
-
-int GetBlue(color inC) 
-{
-  int avgC = int((red(inC) + green(inC) + blue(inC))/3);
-  return (min(255, int((255 - avgC)/1.5)));
-  //return (int((255 - avgC)/2));
-}
-
-int GetT(color inC) 
-{
-  int avgC = int((red(inC) + green(inC) + blue(inC))/3);
-  return (int(avgC/4));
-}
-
-color GetRGBColor(color inC)
-{
-  int avgC = int((red(inC) + green(inC) + blue(inC))/3);
-  return (color(min(255, int(1.5 * avgC)), int(avgC/1.5), 
-    min(255, int((255 - avgC)/2.5))));
-}
-color GetHSBColor(color inC)
-{
-  int avgC = int((red(inC) + green(inC) + blue(inC))/3);
-  int clr = 360 - int(map(avgC, 0, 255, 0, 360));
-  int brt, gry, gvn;
-
-  brt = int(map(avgC, 0, 255, 60, 100));
-  gry = int(map(avgC, 0, 255, 90, 100));
-
-  if (clr < 180) 
-  {
-
-    gvn = int(map(clr, 0, 360, 0, 120));
-  } else if (clr < 210)
-  {
-
-    gvn = int(map(clr, 0, 360, 200, 360));
-  } else {
-
-    gvn = int(map(clr, 0, 360, 200, 360));
+//********************* draw *******************
+void draw() {
+  int transValue;
+  background(bg);
+  //if (trans)
+    image(origCopy, 0, 0);
+  origCopy.loadPixels();
+  original.loadPixels();
+  for (int ix=0; ix < original.height * original.width; ix++) {
+    
+    if (trans)
+      transValue = 255;
+    else
+      transValue = min(255, 4*GetBlue(origCopy.pixels[ix]));
+    original.pixels[ix] = color(GetRGBColor(origCopy.pixels[ix]), 
+      transValue);
+     // original.pixels[ix] = GetHSBColor(origCopy.pixels[ix]);
   }
-  return (color(gvn, gry, brt));
+  original.updatePixels();
+  image(original, 0, 0);
+}
+
+void keyReleased() {
+
+
+  if (key == 'p' || key == 'P' || key == 's' || key == 'S') {
+     newG = createGraphics(origCopy.width, origCopy.height);
+     newG.beginDraw();
+     newG.background(bg);
+     newG.image(origCopy, 0, 0);
+     newG.image(original, 0, 0);
+     newG.endDraw();
+    newG.save("snapshots/pic_"+ year() + month() + day() + int(random(4000, 10000)) + ".png");
+  }
+  if (key == 'o' || key =='O') {
+    if (openFileAndGetImage() == 0)
+      exit();
+    redraw();
+  }
+  if (key == 't' || key =='T') {
+    trans = !trans;
+    redraw();
+  }
 }
