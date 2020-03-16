@@ -12,8 +12,8 @@ import java.util.Calendar;
 JFileChooser fc;
 
 color bg = #f3f0d0;
-boolean firstTime = true;
 boolean trans = false;
+PGraphics newG;
 
 PImage origCopy;
 
@@ -29,7 +29,6 @@ void setup() {
   fc = new JFileChooser("/home/michal/Pictures");
   if (openFileAndGetImage() == 0)
     exit();
-  initialize();
 }
 
 //********************* draw *******************
@@ -54,19 +53,17 @@ void draw() {
   image(original, 0, 0);
 }
 
-////////////////////// init /////////////////////////
-void initialize() {
-
-  if (firstTime) {
-    firstTime = false;
-  }
-}
-
 void keyReleased() {
 
 
   if (key == 'p' || key == 'P' || key == 's' || key == 'S') {
-    saveFrame("snapshots/pic_"+ year() + month() + day() + int(random(4000, 10000)) + ".png");
+     newG = createGraphics(origCopy.width, origCopy.height);
+     newG.beginDraw();
+     newG.background(bg);
+     newG.image(origCopy, 0, 0);
+     newG.image(original, 0, 0);
+     newG.endDraw();
+    newG.save("snapshots/pic_"+ year() + month() + day() + int(random(4000, 10000)) + ".png");
   }
   if (key == 'o' || key =='O') {
     if (openFileAndGetImage() == 0)
