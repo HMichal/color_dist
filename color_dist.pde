@@ -45,8 +45,7 @@ void draw() {
       transValue = 255;
     else
       transValue = min(255, 4*GetBlue(origCopy.pixels[ix]));
-    original.pixels[ix] = color(GetRGBColor(origCopy.pixels[ix]), 
-      transValue);
+    original.pixels[ix] = color(GetRGBColor(origCopy.pixels[ix], transValue));
      // original.pixels[ix] = GetHSBColor(origCopy.pixels[ix]);
   }
   original.updatePixels();
