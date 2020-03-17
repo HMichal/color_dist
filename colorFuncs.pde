@@ -24,11 +24,11 @@ int GetT(color inC)
   return (int(avgC/4));
 }
 
-color GetRGBColor(color inC)
+color GetRGBColor(color inC, int t)
 {
   int avgC = int((red(inC) + green(inC) + blue(inC))/3);
   return (color(min(255, int(1.5 * avgC)), int(avgC/1.5), 
-    min(255, int((255 - avgC)/2.5))));
+    min(255, int((255 - avgC)/2.5)), t));
 }
 color GetHSBColor(color inC)
 {
